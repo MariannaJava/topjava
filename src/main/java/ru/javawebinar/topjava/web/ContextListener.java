@@ -13,10 +13,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ContextListener implements ServletContextListener, HttpSessionListener, HttpSessionAttributeListener {
 
     private CopyOnWriteArrayList<Meal>  meals;
+    private AtomicInteger id;
 
     public ContextListener() {
 
@@ -30,16 +32,26 @@ public class ContextListener implements ServletContextListener, HttpSessionListe
 
         meals = new CopyOnWriteArrayList<>();
 
+        id=new AtomicInteger(0);
+
         servletContext.setAttribute("meals", meals);
+        servletContext.setAttribute("id",id);
 
-        this.meals .add(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500));
-        this.meals .add(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000));
-        this.meals .add(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 20, 0), "Ужин", 500));
-        this.meals .add(new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 0, 0), "Еда на граничное значение", 100));
-        this.meals .add(new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 10, 0), "Завтрак", 1000));
-        this.meals .add(new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0), "Обед", 500));
-        this.meals .add(new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410));
-
+        id.incrementAndGet();
+        this.meals .add(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0), "Завтрак", 500,id.get()));
+        id.incrementAndGet();
+        this.meals .add(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 13, 0), "Обед", 1000,id.get()));
+        id.incrementAndGet();
+        this.meals .add(new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 20, 0), "Ужин", 500,id.get()));
+        id.incrementAndGet();
+        this.meals .add(new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 0, 0), "Еда на граничное значение", 100,id.get()));
+        id.incrementAndGet();
+        this.meals .add(new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 10, 0), "Завтрак", 1000,id.get()));
+        id.incrementAndGet();
+        this.meals .add(new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 13, 0), "Обед", 500,id.get()));
+        id.incrementAndGet();
+        this.meals .add(new Meal(LocalDateTime.of(2020, Month.JANUARY, 31, 20, 0), "Ужин", 410,id.get()));
+        id.incrementAndGet();
     }
 
     @Override
