@@ -43,6 +43,9 @@
         <td><c:out value="${operation.description}"></c:out></td>
         <td><c:out value="${operation.calories}"></c:out></td>
             <%--  <td><a href="MealsServlet?action=delete&mealId=<c:out value="${operation.id}"/>">Delete</a></td>--%>
+        <td><a href="http://">Update</a></td>
+        <td><a href="http://">Delete</a></td>
+        <td><c:out value="${operation.id}"></c:out>
 
         </c:forEach>
     </tr>
