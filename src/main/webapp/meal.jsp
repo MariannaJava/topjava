@@ -14,18 +14,18 @@
     <title>Edit meal</title>
 </head>
 <body>
-<form method="POST" action='UserController' name="formEditMealr">
+<form method="POST" action='MealController' name="formEditMealr">
     <%--User ID : <input type="text" readonly="readonly" name="userid"
                      value="<c:out value="${user.userid}" />" /> <br />--%>
     DateTime : <input
-        type="text" name="datetime"
-        value="<fmt:formatDate pattern="MM/dd/yyyy" value="${user.dob}" />" /> <br />
+        type="text" name="dateTime"
+        value="<fmt:formatDate pattern="MM/dd/yyyy" value="${meal.dateTime}" />" /> <br />
     Description : <input
         type="text" name="description"
-        value="<c:out value="${user.lastName}" />" /> <br />
+        value="<c:out value="${meal.description}" />" /> <br />
     Calories : <input
         type="text" name="calories"
-        value="<c:out value="${user.firstName}" />" /> <br />
+        value="<c:out value="${meal.calories}" />" /> <br />
     <input  type="submit" value="Save" />
     <input  type="reset" value="Cancel" />
 </form>
