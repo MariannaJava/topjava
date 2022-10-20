@@ -17,13 +17,13 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>mealServlet</servlet-name>
+        <servlet-name>MealController</servlet-name>
         <servlet-class>ru.javawebinar.topjava.web.MealController</servlet-class>
         <load-on-startup>0</load-on-startup>
     </servlet>
     <servlet-mapping>
-        <servlet-name>mealServlet</servlet-name>
-        <url-pattern>/meals</url-pattern>
+        <servlet-name>MealController</servlet-name>
+        <url-pattern>/MealController</url-pattern>
     </servlet-mapping>
 
     <listener>

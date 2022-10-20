@@ -19,7 +19,7 @@
 <hr>
 <h2>Meals</h2>
 
-<a href="MealsServlet?action=delete&mealId=<c:out value="${operation.id}"/>">Add meal </a>
+<a href="MealController?action=insert">Add meal</a>
 
 <table border="1" style="border-collapse:collapse;">
     <tr>
@@ -29,6 +29,7 @@
         <th></th>
         <th></th>
     </tr>
+    <jsp:useBean id="mealsTo" scope="request" type="java.util.List"/>
     <c:forEach items="${mealsTo}"
                var="operation">
     <tr style="color: ${operation.excess ? 'red' : 'green'}">
@@ -43,8 +44,8 @@
         <td><c:out value="${operation.description}"></c:out></td>
         <td><c:out value="${operation.calories}"></c:out></td>
             <%--  <td><a href="MealsServlet?action=delete&mealId=<c:out value="${operation.id}"/>">Delete</a></td>--%>
-        <td><a href="http://">Update</a></td>
-        <td><a href="http://">Delete</a></td>
+        <td><a href="MealController?action=edit&mealId=<c:out value="${operation.id}"/>">Update</a></td>
+        <td><a href="MealController?action=delete&mealId=<c:out value="${operation.id}"/>">Delete</a></td>
         <td><c:out value="${operation.id}"></c:out>
 
         </c:forEach>

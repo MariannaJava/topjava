@@ -19,13 +19,13 @@
                      value="<c:out value="${user.userid}" />" /> <br />--%>
     DateTime : <input
         type="text" name="dateTime"
-        value="<fmt:formatDate pattern="MM/dd/yyyy" value="${meal.dateTime}" />" /> <br />
+        value="<fmt:formatDate pattern="MM/dd/yyyy" value="${mealTo.dateTime}" />" /> <br />
     Description : <input
         type="text" name="description"
-        value="<c:out value="${meal.description}" />" /> <br />
+        value="<c:out value="${mealTo.description}" />" /> <br />
     Calories : <input
         type="text" name="calories"
-        value="<c:out value="${meal.calories}" />" /> <br />
+        value="<c:out value="${mealTo.calories}" />" /> <br />
     <input  type="submit" value="Save" />
     <input  type="reset" value="Cancel" />
 </form>
