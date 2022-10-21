@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -70,58 +71,49 @@ public class MealController extends HttpServlet {
                     .filteredByStreams(meals, LocalTime.of(0, 0), LocalTime.of(23, 59), 2000);
             forward = LIST_MEAL;
             request.setAttribute("mealsTo", mealsTo);
+           // response.sendRedirect("meals");
+
         } else if (action.equalsIgnoreCase("edit")){
             forward = INSERT_OR_EDIT;
-            int mealId = Integer.parseInt(request.getParameter("mealId"));
-            MealTo mealTo = mealsTo.get(mealId);
-            request.setAttribute("mealTo", mealTo);
-
+            Integer mealId = Integer.parseInt(request.getParameter("mealId"));
+            Meal meal = meals.get(mealId-1);
+            request.setAttribute("meal", meal);
         } else {
             forward = INSERT_OR_EDIT;
         }
 
         RequestDispatcher view = request.getRequestDispatcher(forward);
         view.forward(request, response);
-        /*
-        List<MealTo> mealsTo=MealsUtil.filteredByStreams(meals, LocalTime.of(0, 0), LocalTime.of(23, 59), 2000);
-        request.setAttribute("mealsTo", mealsTo);
-
-        request.getRequestDispatcher("meals.jsp").forward(request, response);*/
-        //response.sendRedirect("meals.jsp");
-        log.debug("redirect to meals");
+       log.debug("redirect to meals");
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Meal meal=new Meal(LocalDateTime.of(2020, Month.JANUARY, 30, 10, 0),//request.getParameter("dateTime),
-                request.getParameter("description"),
-                Integer.parseInt(request.getParameter("calories")),
-                id.get()
-                );
+        request.setCharacterEncoding("UTF-8");
+        Meal meal=new Meal();
+        String mealid = request.getParameter("mealId");
+        DateTimeFormatter DATEFORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        LocalDateTime ldt = LocalDateTime.parse(request.getParameter("dateTime"), DATEFORMATTER);
 
-        /*User user = new User();
-        user.setFirstName(request.getParameter("firstName"));
-        user.setLastName(request.getParameter("lastName"));
-        try {
-            Date dob = new SimpleDateFormat("MM/dd/yyyy").parse(request.getParameter("dob"));
-            user.setDob(dob);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        user.setEmail(request.getParameter("email"));
-        String userid = request.getParameter("userid");
-        if(userid == null || userid.isEmpty())
-        {
-            dao.addUser(user);
-        }
-        else
-        {
-            user.setUserid(Integer.parseInt(userid));
-            dao.updateUser(user);
-        }*/
-
-
+        if(mealid == null || mealid.isEmpty()) {
+            meal = new Meal(LocalDateTime.parse(request.getParameter("dateTime"), DATEFORMATTER),//request.getParameter("dateTime),
+                    request.getParameter("description"),
+                    Integer.parseInt(request.getParameter("calories")),
+                    id.get());
         meals.add(meal);
+        } else{
+            meal.setId(Integer.parseInt(request.getParameter("mealId")));
+            meal.setDateTime(LocalDateTime.parse(request.getParameter("dateTime"), DATEFORMATTER));
+            meal.setDescription(request.getParameter("description"));
+            meal.setCalories(Integer.parseInt(request.getParameter("calories")));
+            Meal mealFind=meals.stream()
+                    .filter(s->s.getId()==Integer.parseInt(request.getParameter("mealId")))
+                            .findAny()
+                    .get();
+
+            meals.set(meals.indexOf(mealFind),meal);
+
+        }
         List<MealTo> mealsTo=MealsUtil
                 .filteredByStreams(meals, LocalTime.of(0, 0), LocalTime.of(23, 59), 2000);
         RequestDispatcher view = request.getRequestDispatcher(LIST_MEAL);
@@ -130,17 +122,3 @@ public class MealController extends HttpServlet {
     }
 
 }
-
-/*
-
-   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-
-
-    }
-
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-}
-*/
-

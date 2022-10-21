@@ -37,7 +37,7 @@
 
             <fmt:parseDate value="${ operation.dateTime }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime"
                            type="both"/>
-            <fmt:formatDate pattern="dd.MM.yyyy HH:mm" value="${ parsedDateTime }"/>
+            <fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${ parsedDateTime }"/>
 
 
         </td>
@@ -46,7 +46,6 @@
             <%--  <td><a href="MealsServlet?action=delete&mealId=<c:out value="${operation.id}"/>">Delete</a></td>--%>
         <td><a href="MealController?action=edit&mealId=<c:out value="${operation.id}"/>">Update</a></td>
         <td><a href="MealController?action=delete&mealId=<c:out value="${operation.id}"/>">Delete</a></td>
-        <td><c:out value="${operation.id}"></c:out>
 
         </c:forEach>
     </tr>

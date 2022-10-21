@@ -2,7 +2,8 @@
   Author: Marianna Dorohova.
   Date: 20.10.22.
 --%>
-<%@ page language="java" contentType="text/html; charset=EUC-KR" pageEncoding="EUC-KR"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%--<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>--%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
@@ -14,22 +15,26 @@
     <title>Edit meal</title>
 </head>
 <body>
-<form method="POST" action='MealController' name="formEditMealr">
-    <%--User ID : <input type="text" readonly="readonly" name="userid"
-                     value="<c:out value="${user.userid}" />" /> <br />--%>
-    DateTime : <input
+<form method="POST" action='MealController' name="formEditMeal">
+        Meal ID : <input type="text" readonly="readonly" name="mealId"
+                         value="<c:out value="${meal.id}" />" /> <br />
+        <fmt:parseDate value="${ meal.dateTime }" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime"
+                       type="both"/>
+
+        DateTime : <input
         type="text" name="dateTime"
-        value="<fmt:formatDate pattern="MM/dd/yyyy" value="${mealTo.dateTime}" />" /> <br />
+        value="<fmt:formatDate pattern="dd/MM/yyyy HH:mm" value="${ parsedDateTime }"/>" /> <br />
     Description : <input
         type="text" name="description"
-        value="<c:out value="${mealTo.description}" />" /> <br />
+        value="<c:out value="${meal.description}" />" /> <br />
     Calories : <input
         type="text" name="calories"
-        value="<c:out value="${mealTo.calories}" />" /> <br />
+        value="<c:out value="${meal.calories}" />" /> <br />
     <input  type="submit" value="Save" />
-    <input  type="reset" value="Cancel" />
+    <input  type="reset"  value="Cancel" />
 </form>
-
+</body>
+</html>
 <%--
     <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
     <link type="text/css"
@@ -61,5 +66,3 @@
                    value="<c:out value="${user.email}" />" /> <br /> <input
         type="submit" value="Submit" />
 </form>--%>
-</body>
-</html>

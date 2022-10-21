@@ -9,6 +9,9 @@ public class Meal {
 
     private  String description;
 
+    public Meal() {
+    }
+
     private  int calories;
 
     public void setDateTime(LocalDateTime dateTime) {
