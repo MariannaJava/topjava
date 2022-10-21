@@ -10,7 +10,6 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -24,17 +23,17 @@ public class MealController extends HttpServlet {
 
     private static final Logger log = getLogger(MealController.class);
 
-    private static String INSERT_OR_EDIT = "/meal.jsp";
-    private static String LIST_MEAL = "/meals.jsp";
+    private final static String INSERT_OR_EDIT = "/meal.jsp";
+    private final static String LIST_MEAL = "/meals.jsp";
     private CopyOnWriteArrayList<Meal> meals;
     private AtomicInteger id;
 
     @Override
-    public void init() throws ServletException {
+    public void init() {
 
         Object meals = getServletContext().getAttribute("meals");
 
-        if (meals == null || !(meals instanceof CopyOnWriteArrayList)) {
+        if ( !(meals instanceof CopyOnWriteArrayList)) {
 
             throw new IllegalStateException("You're repo does not initialize!");
         } else {
@@ -42,7 +41,7 @@ public class MealController extends HttpServlet {
             this.meals = (CopyOnWriteArrayList<Meal>) meals;
         }
         Object id=getServletContext().getAttribute("id");
-        if (id == null || !(id instanceof AtomicInteger)) {
+        if (!(id instanceof AtomicInteger)) {
 
             throw new IllegalStateException("You're repo does not initialize!");
         } else {
@@ -53,7 +52,7 @@ public class MealController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String forward="";
+        String forward;
         String action = request.getParameter("action");
 
 
@@ -67,15 +66,17 @@ public class MealController extends HttpServlet {
             int mealId = Integer.parseInt(request.getParameter("mealId"));
             meals.remove(mealId-1);
 
-            mealsTo=MealsUtil
-                    .filteredByStreams(meals, LocalTime.of(0, 0), LocalTime.of(23, 59), 2000);
-            forward = LIST_MEAL;
-            request.setAttribute("mealsTo", mealsTo);
-           // response.sendRedirect("meals");
-
+            //mealsTo=MealsUtil
+             //       .filteredByStreams(meals, LocalTime.of(0, 0), LocalTime.of(23, 59), 2000);
+            //forward = LIST_MEAL;
+            response.sendRedirect("MealController?action=listMeal");
+            log.debug("redirect to MealController?action=listMeal");
+            //request.setAttribute("mealsTo", mealsTo);
+            log.debug("Set attribute mealsTo for meals.jsp");
+            return;
         } else if (action.equalsIgnoreCase("edit")){
             forward = INSERT_OR_EDIT;
-            Integer mealId = Integer.parseInt(request.getParameter("mealId"));
+            int mealId = Integer.parseInt(request.getParameter("mealId"));
             Meal meal = meals.get(mealId-1);
             request.setAttribute("meal", meal);
         } else {
@@ -84,7 +85,7 @@ public class MealController extends HttpServlet {
 
         RequestDispatcher view = request.getRequestDispatcher(forward);
         view.forward(request, response);
-       log.debug("redirect to meals");
+       log.debug("forward ");
     }
 
     @Override
@@ -93,7 +94,6 @@ public class MealController extends HttpServlet {
         Meal meal=new Meal();
         String mealid = request.getParameter("mealId");
         DateTimeFormatter DATEFORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-        LocalDateTime ldt = LocalDateTime.parse(request.getParameter("dateTime"), DATEFORMATTER);
 
         if(mealid == null || mealid.isEmpty()) {
             meal = new Meal(LocalDateTime.parse(request.getParameter("dateTime"), DATEFORMATTER),//request.getParameter("dateTime),
