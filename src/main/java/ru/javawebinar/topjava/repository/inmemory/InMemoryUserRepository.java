@@ -12,10 +12,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+
+
 @Repository
 public class InMemoryUserRepository implements UserRepository {
     private static final Logger log = LoggerFactory.getLogger(InMemoryUserRepository.class);
-
+    public final int USER_ID=1;
+    public final int ADMIN_ID=2;
 
 
     private final Map<Integer, User> usersMap = new ConcurrentHashMap<>();
