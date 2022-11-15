@@ -22,7 +22,7 @@ import static ru.javawebinar.topjava.repository.inmemory.InMemoryUserRepository.
 public class InMemoryMealRepository implements MealRepository {
 
 
-    private final Map<Integer,Map<Integer, Meal>> usersMealsMap = new ConcurrentMap<Integer, Map<Integer, Meal>>()
+    private final Map<Integer, Map<Integer, Meal>> usersMealsMap = new ConcurrentHashMap<>();
 
 
 /////////////////////////////////////////////////////////
@@ -37,8 +37,7 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public Meal save(Meal meal,int userId) {
-        HashMap<Integer,Meal> meals=usersMealsMap.get(userId);
-
+        Map<Integer, Meal> meals = usersMealsMap.computeIfAbsent(userId, uId -> new ConcurrentHashMap<>());
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
             meals.put(meal.getId(), meal);
@@ -51,13 +50,13 @@ public class InMemoryMealRepository implements MealRepository {
     @Override
     public boolean delete(int id,int userId) {
 
-        HashMap<Integer,Meal> meals=usersMealsMap.get(userId);
+        Map<Integer,Meal> meals=usersMealsMap.get(userId);
         return meals.remove(id) != null;
     }
 
     @Override
     public Meal get(int id,int userId) {
-        HashMap<Integer,Meal> meals=usersMealsMap.get(userId);
+        Map<Integer,Meal> meals=usersMealsMap.get(userId);
 
         return meals.get(id);
     }
@@ -65,7 +64,7 @@ public class InMemoryMealRepository implements MealRepository {
     @Override
     public Collection<Meal> getAll(int userId) {
 
-        HashMap<Integer,Meal> meals=usersMealsMap.get(userId);
+        Map<Integer,Meal> meals=usersMealsMap.get(userId);
         return meals.values();
     }
 }
