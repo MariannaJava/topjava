@@ -9,15 +9,23 @@ import java.time.Month;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import ru.javawebinar.topjava.repository.inmemory.InMemoryUserRepository;
 
+import static ru.javawebinar.topjava.repository.inmemory.InMemoryUserRepository.ADMIN_ID;
+import static ru.javawebinar.topjava.repository.inmemory.InMemoryUserRepository.USER_ID;
+
 public class InMemoryMealRepository implements MealRepository {
 
 
-    private final Map<Integer,Map<Integer, Meal>> usersMealsMap = new ConcurrentHashMap<>();
+    private final Map<Integer,Map<Integer, Meal>> usersMealsMap = new ConcurrentMap<Integer, Map<Integer, Meal>>()
+
+
+/////////////////////////////////////////////////////////
     private final AtomicInteger counter = new AtomicInteger(0);
 
     {
