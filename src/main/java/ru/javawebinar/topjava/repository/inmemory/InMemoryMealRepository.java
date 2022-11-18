@@ -71,7 +71,7 @@ public class InMemoryMealRepository implements MealRepository {
 
     public Collection<Meal> getBeetweenHalfOpen(int userId, LocalDateTime start, LocalDateTime end){
 
-        return filterByPredicate(userId, meal->Util.isBeetweenHalfOpen(meal::getDateTime,start,end));
+        return filterByPredicate(userId, meal->Util.isBeetweenHalfOpen(meal.getDateTime(),start,end));
     }
 
     public List<Meal> filterByPredicate(int userId, Predicate<Meal> filter){
@@ -80,7 +80,7 @@ public class InMemoryMealRepository implements MealRepository {
                 meals.values().stream()
                         .filter(filter)
                         .sorted(Comparator.comparing(Meal::getDateTime).reversed())
-                        .collect(Collectors.toList());;
+                        .collect(Collectors.toList());
     }
 }
 
