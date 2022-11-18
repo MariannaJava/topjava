@@ -1,20 +1,21 @@
 package ru.javawebinar.topjava.repository.inmemory;
 
+import org.springframework.util.CollectionUtils;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.util.MealsUtil;
 
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import ru.javawebinar.topjava.repository.inmemory.InMemoryUserRepository;
+import ru.javawebinar.topjava.util.Util;
 
 import static ru.javawebinar.topjava.repository.inmemory.InMemoryUserRepository.ADMIN_ID;
 import static ru.javawebinar.topjava.repository.inmemory.InMemoryUserRepository.USER_ID;
@@ -64,8 +65,22 @@ public class InMemoryMealRepository implements MealRepository {
     @Override
     public Collection<Meal> getAll(int userId) {
 
+        return filterByPredicate(userId,a->true);
+
+    }
+
+    public Collection<Meal> getBeetweenHalfOpen(int userId, LocalDateTime start, LocalDateTime end){
+
+        return filterByPredicate(userId, meal->Util.isBeetweenHalfOpen(meal::getDateTime,start,end));
+    }
+
+    public List<Meal> filterByPredicate(int userId, Predicate<Meal> filter){
         Map<Integer,Meal> meals=usersMealsMap.get(userId);
-        return meals.values();
+        return CollectionUtils.isEmpty(meals) ? Collections.emptyList() :
+                meals.values().stream()
+                        .filter(filter)
+                        .sorted(Comparator.comparing(Meal::getDateTime).reversed())
+                        .collect(Collectors.toList());;
     }
 }
 
